@@ -9,7 +9,7 @@
                         <t t-set="data_report_header_spacing" t-value="9"/>
                         <t t-set="data_report_dpi" t-value="110"/>
                         <div class="page">
-                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+<!--                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>-->
                             <h2>
                                 <t t-esc="o.name"/>
                                 Journal

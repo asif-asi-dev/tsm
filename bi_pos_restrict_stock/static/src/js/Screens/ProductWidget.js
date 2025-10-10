@@ -17,9 +17,9 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                 self.env.services['bus_service'].addEventListener('notification', ({ detail: notifications }) => {
                     self.syncProdData(notifications);
                 });
-                
+
             }
-			get productsToDisplay() {    
+			get productsToDisplay() {
                 	   let self = this;
 				let prods = super.productsToDisplay;
 				let order = self.env.pos.get_order();
@@ -48,8 +48,8 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                             var reserved_qty = order.get_display_product_qty(prd);
                             remain_on_hand_qty = remain_on_hand_qty -reserved_qty
                         }
-                        prd['qty_available']=quantity_available
-                        prd['remain_on_hand_qty'] = remain_on_hand_qty
+                        prd['qty_available']= parseFloat(quantity_available.toFixed(2));
+                        prd['remain_on_hand_qty'] = parseFloat(remain_on_hand_qty.toFixed(2));
 
                     });
                 }else if(self.env.pos.config.stock_type == 'virtual'){
@@ -85,8 +85,8 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                             var reserved_qty = order.get_display_product_qty(prd);
                             remain_virtual_qty = remain_virtual_qty - reserved_qty;
                         }
-                        prd['virtual_available']=virtual_available
-                        prd['remain_virtual_qty'] = remain_virtual_qty
+                        prd['virtual_available']= parseFloat(virtual_available.toFixed(2));
+                        prd['remain_virtual_qty'] = parseFloat(remain_virtual_qty.toFixed(2));
                     });
                 }
                 else if(self.env.pos.config.stock_type == 'both'){
@@ -125,8 +125,8 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                             var reserved_qty = order.get_display_product_qty(prd);
                             remain_on_hand_qty = remain_on_hand_qty -reserved_qty
                         }
-                        prd['qty_available']=quantity_available
-                        prd['remain_on_hand_qty'] = remain_on_hand_qty
+                        prd['qty_available']= parseFloat(quantity_available.toFixed(2));
+                        prd['remain_on_hand_qty'] = parseFloat(remain_on_hand_qty.toFixed(2));
                         let remain_virtual_qty = 0;
                         if(prd['bi_on_virtual']>0){
                             var bi_on_virtual = order.get_display_product_qty(prd);
@@ -137,8 +137,8 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                             var reserved_qty = order.get_display_product_qty(prd);
                             remain_virtual_qty = remain_virtual_qty - reserved_qty;
                         }
-                        prd['virtual_available']=virtual_available
-                        prd['remain_virtual_qty'] = remain_virtual_qty
+                        prd['virtual_available']= parseFloat(virtual_available.toFixed(2));
+                        prd['remain_virtual_qty'] =  parseFloat(remain_virtual_qty.toFixed(2));
                     });
                 }
                 if (this.searchWord !== '') {
@@ -184,7 +184,7 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                 const productMap = {};
                 const productTemplateMap = {};
 
-                product.pos = self.env.pos; 
+                product.pos = self.env.pos;
                 product.applicablePricelistItems = {};
                 productMap[product.id] = product;
                 productTemplateMap[product.product_tmpl_id[0]] = (productTemplateMap[product.product_tmpl_id[0]] || []).concat(product);
@@ -214,7 +214,7 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                 }
                 self.env.pos.db.product_by_id[product.id] = new_prod ;
             }
-            
+
         };
 	Registries.Component.extend(ProductsWidget, BiProductsWidget);
 
