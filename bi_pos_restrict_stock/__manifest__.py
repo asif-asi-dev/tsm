@@ -3,7 +3,7 @@
 
 {
     'name': 'Restrict Out of Stock Product on POS',
-    'version': '16.0.0.5',
+    'version': '16.0.0.6',
     'category': 'Point of Sale',
     'summary': 'Out of stock product restriction on point of sales order restriction for out of stock product restriction for POS Restrict Out Stock Product POS stop out of stock product for POS available products only out of stock product alerts out of stock products POS',
     'description': """
