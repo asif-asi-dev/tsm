@@ -42,6 +42,7 @@ class AccountBankBookReport(models.TransientModel):
                                    default=lambda self: self.env['account.journal'].search([('type','=', 'bank')]))
     account_ids = fields.Many2many('account.account', 'account_account_bankbook_report', 'report_line_id',
                                    'account_id', 'Accounts')
+    account_id = fields.Many2one('account.account', string='Accounts', domain="[('account_type', 'in', ['asset_cash']), ('is_cash_acc', '=', False)]")
 
     display_account = fields.Selection(
         [('all', 'All'), ('movement', 'With movements'),
@@ -59,6 +60,14 @@ class AccountBankBookReport(models.TransientModel):
         ("detailed", "Detailed"),
         ("summary", "Summary"),
     ], string="Report Type", default='detailed')
+
+    @api.onchange('account_id')
+    def _onchange_account_id(self):
+        if self.account_id:
+            self.account_ids = [(6, 0, [self.account_id.id])]
+        else:
+            self.account_ids = [(5, 0, 0)]
+        self.onchange_account_ids()
 
     @api.onchange("date_from", "date_to", "date_range_id")
     def _check_dates_within_date_range(self):

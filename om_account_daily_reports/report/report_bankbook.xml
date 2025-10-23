@@ -50,7 +50,7 @@
               <tr class="text-center" style="background-color: #4c4c4c; color: white;">
                 <th style="padding: 10px; border: 1px solid #8c8c8c;">Date</th>
                 <th style="padding: 10px; border: 1px solid #8c8c8c;">Voucher Type</th>
-                <th style="padding: 10px; border: 1px solid #8c8c8c;">Account</th>
+<!--                <th style="padding: 10px; border: 1px solid #8c8c8c;">Account</th>-->
                 <th style="padding: 10px; border: 1px solid #8c8c8c;">Ref</th>
                 <th style="padding: 10px; border: 1px solid #8c8c8c;">Voucher No</th>
                 <th style="padding: 10px; border: 1px solid #8c8c8c;">Narration</th>
@@ -62,7 +62,7 @@
             <tbody>
               <t t-foreach="Accounts" t-as="account">
                 <tr style="font-weight: bold; background-color: #e9ecef;">
-                  <td colspan="6" style="border: 1px solid #8c8c8c;">
+                  <td colspan="5" style="border: 1px solid #8c8c8c;">
                     <span style="color: white;" t-esc="'..'"/>
                     <span t-esc="account['code']"/>
                     <span t-esc="account['name']"/>
@@ -89,11 +89,11 @@
                     <td style="padding: 8px; border: 1px solid #8c8c8c;">
                       <span t-esc="line['lcode']"/>
                     </td>
-                    <td style="padding: 8px; border: 1px solid #8c8c8c;">
-                      <span t-att-res-id="account['account_id']" res-model="account.account" view-type="form">
-                        <span t-esc="line['account_name']"/>
-                      </span>
-                    </td>
+<!--                    <td style="padding: 8px; border: 1px solid #8c8c8c;">-->
+<!--                      <span t-att-res-id="account['account_id']" res-model="account.account" view-type="form">-->
+<!--                        <span t-esc="line['account_name']"/>-->
+<!--                      </span>-->
+<!--                    </td>-->
                     <td style="padding: 8px; border: 1px solid #8c8c8c;">
                       <span t-if="line['lref']" t-esc="line['lref']"/>
                     </td>
