@@ -27,7 +27,7 @@
                     <group>
                         <field name="operating_unit_id" required="1"/>
                         <field name="date_to"/>
-                        <field name="account_ids" widget="many2many_tags" invisible="1"/>
+                        <field name="account_ids" widget="many2many_tags" invisible="0"/>
                         <field name="journal_ids" widget="many2many_tags" invisible="1"/>
                     </group>
                 </group>

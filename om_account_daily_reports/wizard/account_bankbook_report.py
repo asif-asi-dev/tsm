@@ -41,7 +41,7 @@ class AccountBankBookReport(models.TransientModel):
     journal_ids = fields.Many2many('account.journal', string='Journals', required=True,
                                    default=lambda self: self.env['account.journal'].search([('type','=', 'bank')]))
     account_ids = fields.Many2many('account.account', 'account_account_bankbook_report', 'report_line_id',
-                                   'account_id', 'Accounts', default=_get_default_account_ids)
+                                   'account_id', 'Accounts')
 
     display_account = fields.Selection(
         [('all', 'All'), ('movement', 'With movements'),
