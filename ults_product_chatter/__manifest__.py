@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'ULTS Product Field Tracking',
-    'version': '16.0.1.0.0',
+    'version': '16.0.1.0.1',
     'category': 'Inventory/Inventory',
     'summary': 'Track product field changes in chatter with configurable modes',
     'description': """

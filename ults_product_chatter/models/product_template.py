@@ -38,7 +38,7 @@ class ProductTemplate(models.Model):
                 'message_has_error', 'message_has_error_counter', 'message_has_sms_error',
                 'message_attachment_count', 'message_is_follower', 'message_partner_ids',
                 'message_needaction', 'message_needaction_counter', 'message_unread',
-                'message_unread_counter', 'rating_ids', 'website_id',
+                'message_unread_counter', 'rating_ids', 'website_id', 'image_1920',
             }
 
             for field_name, field in self._fields.items():
