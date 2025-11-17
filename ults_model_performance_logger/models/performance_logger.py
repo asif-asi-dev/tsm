@@ -12,6 +12,8 @@ import time
 import logging
 import functools
 from odoo import models, api, fields as odoo_fields
+import inspect
+import traceback
 
 _logger = logging.getLogger(__name__)
 
@@ -48,36 +50,41 @@ TRACKED_FIELDS = [
 _original_compute_field_value = models.BaseModel._compute_field_value
 
 def _tracked_compute_field_value(self, field):
-    """Track computed field execution time"""
-    if not TRACK_COMPUTED_FIELDS:
-        return _original_compute_field_value(self, field)
-
-    # Skip if model not tracked
-    if TRACKED_MODELS and self._name not in TRACKED_MODELS:
-        return _original_compute_field_value(self, field)
-
-    # Skip if field not tracked
-    field_name = f"{self._name}.{field.name}"
-    if TRACKED_FIELDS and field_name not in TRACKED_FIELDS:
-        return _original_compute_field_value(self, field)
-
+    """Track computed field execution time and log the caller location"""
     start = time.time()
     result = _original_compute_field_value(self, field)
     duration = time.time() - start
 
     if duration > SLOW_THRESHOLD:
-        compute_method = field.compute if isinstance(field.compute, str) else field.compute.__name__
+
+        # Identify where the compute was triggered
+        stack = traceback.format_stack()
+        # or if you prefer showing FIRST caller outside compute methods:
+        caller = next(
+            (f for f in stack if "/addons/" in f and "_compute_" not in f),
+            stack[-1]
+        )
+
+        compute_method = (
+            field.compute if isinstance(field.compute, str) else field.compute.__name__
+        )
+
         _logger.warning(
-            f"🐌 SLOW COMPUTED FIELD: {field_name}\n"
-            f"   Method: {compute_method}\n"
-            f"   Duration: {duration:.4f}s\n"
-            f"   Records: {len(self)}\n"
-            f"   Record IDs: {self.ids[:10]}"
+            "\n============ 🔥 SLOW COMPUTE DETECTED ============\n"
+            f"Model: {self._name}\n"
+            f"Field: {field.name}\n"
+            f"Method: {compute_method}\n"
+            f"Duration: {duration:.4f}s\n"
+            f"Record IDs: {self.ids[:10]}\n"
+            f"----------------------------------------------\n"
+            f"Triggered from:\n{caller}"
+            "=================================================\n"
         )
 
     return result
 
 models.BaseModel._compute_field_value = _tracked_compute_field_value
+
 
 
 # ============================================================
