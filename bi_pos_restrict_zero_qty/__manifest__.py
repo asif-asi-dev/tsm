@@ -3,7 +3,7 @@
 
 {
     'name': 'POS Restrict Zero Quantity',
-    'version': '16.0.0.1',
+    'version': '16.0.0.2',
     'category': 'Point of Sale',
     'summary': 'Point Of Sale Restrict Zero Quantity pos restrict negative stock sales of products with zero or negative stock levels pos restrict zero stock product pos Restrict product with zero Quantity pos order line restriction with zero Quantity on pos',
     'description' :"""

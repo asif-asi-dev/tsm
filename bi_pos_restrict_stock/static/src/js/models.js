@@ -39,6 +39,11 @@ odoo.define('bi_pos_restrict_stock.models', function(require) {
         add_product(product, options){
             let self = this;
             let call_super = true;
+            if (options && options.refunded_orderline_id) {
+                // This is a refund → skip warnings
+                this.pos.warningpopup = false;
+                return super.add_product(...arguments);
+            }
             if(self.pos.config.display_stock && product.type == 'product' && this.pos.warningpopup == false){
                 if (self.pos.config.restrict_product == true){
                     if(self.pos.config.stock_type == "onhand"){

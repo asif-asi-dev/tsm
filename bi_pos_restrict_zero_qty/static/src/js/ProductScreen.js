@@ -20,6 +20,10 @@ odoo.define('bi_pos_restrict_zero_qty.productScreen', function(require) {
 				var config_id=self.env.pos.config.id;
 				let prod_used_qty = {};
 				let restrict = false;
+				const isRefundOrder = lines.some(l => l.refunded_orderline_id);
+                if (isRefundOrder) {
+                    return super._onClickPay();
+                }
 				if(pos_config.restrict_zero_qty){
 					$.each(lines, function( i, line ){
 						let prd = line.product;
