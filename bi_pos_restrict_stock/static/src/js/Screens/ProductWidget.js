@@ -31,13 +31,19 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                         prd['qty_available'] = 0;
                         let loc_onhand = JSON.parse(prd.quant_text);
                         var quantity_available=0
+                        var total_reserved = 0;
+
                         _.each(locations,function(location){
                             $.each(loc_onhand, function( k, v ){
                                 if(location.id == k){
                                     quantity_available = quantity_available + v[0];
+                                    total_reserved = total_reserved + (v[1] || 0); // reserved/outgoing
                                 }
                             })
                         })
+
+                        quantity_available = quantity_available - total_reserved;
+
                         let remain_on_hand_qty = 0;
                         if(prd['bi_on_hand'] > 0){
                             var bi_on_hand = order.get_display_product_qty(prd)
@@ -96,6 +102,7 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                         prd['qty_available'] = 0;
                         var virtual_available=0
                         var quantity_available=0
+                        var total_reserved = 0;
                         let total = 0;
                         let out = 0;
                         let inc = 0;
@@ -109,12 +116,18 @@ odoo.define('bi_pos_restrict_stock.ProductsWidget', function(require) {
                                     if(v[2]){
                                         inc += v[2];
                                     }
-                                    let final_data = (total + inc) - out
-                                    virtual_available = final_data;
+                                    // let final_data = (total + inc) - out
+                                    // virtual_available = final_data;
                                     quantity_available = quantity_available + v[0];
+                                    total_reserved = total_reserved + (v[1] || 0);
                                 }
                             })
                         })
+
+                        let final_data = (total + inc) - out;
+                        virtual_available = final_data;
+                        quantity_available = quantity_available - total_reserved; 
+
                         let remain_on_hand_qty = 0;
                         if(prd['bi_on_hand'] > 0){
                             var bi_on_hand = order.get_display_product_qty(prd)
