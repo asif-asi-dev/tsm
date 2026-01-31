@@ -139,27 +139,27 @@ class stock_move(models.Model):
 				'product': product,
 				'access':'pos.sync.product',
 			}
-			# notifications.append([self.env.user.partner_id,'product.product/sync_data',vals])
+			notifications.append([self.env.user.partner_id,'product.product/sync_data',vals])
 			
-			# Get all active POS sessions and send notifications to each
-			active_sessions = self.env['pos.session'].sudo().search([('state', '=', 'opened')])
+			# # Get all active POS sessions and send notifications to each
+			# active_sessions = self.env['pos.session'].sudo().search([('state', '=', 'opened')])
 			
-			for session in active_sessions:
-				# Send to each session's user
-				if session.user_id and session.user_id.partner_id:
-					notifications.append([
-						session.user_id.partner_id,
-						'product.product/sync_data',
-						vals
-					])
+			# for session in active_sessions:
+			# 	# Send to each session's user
+			# 	if session.user_id and session.user_id.partner_id:
+			# 		notifications.append([
+			# 			session.user_id.partner_id,
+			# 			'product.product/sync_data',
+			# 			vals
+			# 		])
 			
-			# Also send to current user as fallback
-			if self.env.user.partner_id:
-				notifications.append([
-					self.env.user.partner_id,
-					'product.product/sync_data',
-					vals
-				])
+			# # Also send to current user as fallback
+			# if self.env.user.partner_id:
+			# 	notifications.append([
+			# 		self.env.user.partner_id,
+			# 		'product.product/sync_data',
+			# 		vals
+			# 	])
 		if len(notifications) > 0:
 			self.env['bus.bus']._sendmany(notifications)
 		return True
