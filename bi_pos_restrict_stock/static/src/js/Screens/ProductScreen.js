@@ -67,6 +67,30 @@ odoo.define('bi_pos_restrict_stock.ProductScreen', function(require) {
                     if(self.env.pos.config.display_stock && line.product.type == 'product' && self.env.pos.config.restrict_product == true){
                         if (this.env.pos.numpadMode === 'quantity') {
                             if(val != 'remove' && val != ''){
+
+                                // ── Lot-level validation ──────────────────────────────────
+                                const sessionLots = self.env.session.lots || [];
+                                const lineLots = line.lots || [];
+
+                                if (lineLots.length > 0) {
+                                    const enteredLotName = lineLots[0].lot_name;
+                                    const matchedLot = sessionLots.find(l => l.name === enteredLotName);
+
+                                    if (matchedLot && matchedLot.available_product_qty < parseFloat(val)) {
+                                        self.showPopup('ErrorPopup', {
+                                            title: self.env._t('Insufficient Lot Quantity'),
+                                            body: _.str.sprintf(
+                                                self.env._t('Only %s unit(s) available in lot %s for product %s.'),
+                                                matchedLot.available_product_qty,
+                                                enteredLotName,
+                                                line.product.display_name
+                                            ),
+                                        });
+                                        return;
+                                    }
+                                }
+                                // ── End lot-level validation ──────────────────────────────
+
                                 if(self.env.pos.config.stock_type == "onhand"){
                                     if (line.product.qty_available < val){
                                         self.showPopup('BiWarningPopup', {
