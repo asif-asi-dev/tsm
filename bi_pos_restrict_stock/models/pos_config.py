@@ -42,7 +42,7 @@ class Product(models.Model):
 				quants = self.env['stock.quant'].sudo().search(
 					[('product_id', 'in', rec.ids), ('location_id.usage', '=', 'internal')])
 				outgoing = self.env['stock.move'].sudo().search(
-					[('product_id', '=', rec.id), ('state', 'not in', ['done']),
+					[('product_id', '=', rec.id), ('state', 'not in', ['done','cancel']),
 					 ('location_id.usage', '=', 'internal'),
 					 ('picking_id.picking_type_code', 'in', ['outgoing'])])
 				incoming = self.env['stock.move'].sudo().search(
